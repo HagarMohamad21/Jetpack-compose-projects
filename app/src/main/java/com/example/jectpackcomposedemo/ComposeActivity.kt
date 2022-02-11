@@ -54,4 +54,49 @@ fun Content(container: @Composable () -> Unit) {
 }
 
 
+//@Preview(showBackground = true)
+@Composable
+fun TopHeader(totalPerPerson: Float = 0f) {
+    Surface(
+        Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))), color = Color(0xFFD7CADA)
+    ) {
+        Column(
+            modifier = Modifier.padding(all = 12.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val total = "%.2f".format(totalPerPerson)
+            Text(
+                text = "Total Per Person",
+                textAlign = TextAlign.Center, fontStyle = FontStyle.Normal,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                text = "$$total",
+                textAlign = TextAlign.Center, fontStyle = FontStyle.Normal,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MainContent() {
+    Surface(
+        modifier = Modifier
+            .padding(2.dp)
+            .fillMaxWidth(), shape = CircleShape.copy(all = CornerSize(8.dp)),
+        border = BorderStroke(width = 1.dp, color = Color.LightGray)
+    )
+    { Column() {}
+    }
+}
+
+
 
