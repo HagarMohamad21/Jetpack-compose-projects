@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">JectPackComposeDemo</string>
     <string name="title_activity_compose">ComposeActivity</string>
+    <string name="enter_bill">Enter bill</string>
 </resources>
