@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,17 +37,37 @@ import androidx.compose.ui.unit.sp
 import com.example.jectpackcomposedemo.components.CustomInputField
 import com.example.jectpackcomposedemo.ui.theme.JectPackComposeDemoTheme
 import com.example.jectpackcomposedemo.widgets.RoundIconButton
-import javax.sql.RowSet
 
 
 class ComposeActivity : ComponentActivity() {
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             Surface(
                 modifier = Modifier.padding(12.dp)
             ) {
-            MainContent()
+                val totalBill = remember {
+                    mutableStateOf("")
+                }
+                val valid= remember(totalBill.value) {
+                    totalBill.value.trim().isNotEmpty()
+                }
+                val people= remember { mutableStateOf(1)}
+
+
+                val sliderValue= remember {
+                    mutableStateOf(0f)
+                }
+                val percentage=(sliderValue.value*100)
+                val tipAmount= calculateTip(totalBill.value,percentage)
+                val totalPerPerson= calculateTotalPerPerson(totalBill.value,tipAmount,people.value)
+             Column() {
+                 TopHeader(totalPerPerson.toFloat())
+                 Spacer(modifier = Modifier.height(15.dp))
+                 MainContent(totalBill,valid,people,sliderValue,percentage,tipAmount.toFloat())
+             }
             }
 
         }
@@ -102,9 +123,15 @@ fun TopHeader(totalPerPerson: Float = 0f) {
 
 
 @OptIn(ExperimentalComposeUiApi::class)
-@Preview
 @Composable
-fun MainContent() {
+fun MainContent(
+    totalBill: MutableState<String>,
+    valid: Boolean,
+    people: MutableState<Int>,
+    sliderValue: MutableState<Float>,
+    percentage: Float,
+    tipAmount: Float
+) {
     Surface(
         modifier = Modifier
             .padding(2.dp)
@@ -112,7 +139,7 @@ fun MainContent() {
         border = BorderStroke(width = 1.dp, color = Color.LightGray)
     )
     { Column(modifier = Modifier.padding(all=5.dp), horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Top) {
-           BillForm(){
+           BillForm(totalBill = totalBill, valid = valid, people = people, sliderValue = sliderValue, percentage = percentage, tipAmount = tipAmount){
 
            }
     }
@@ -123,26 +150,13 @@ fun MainContent() {
 
 @ExperimentalComposeUiApi
 @Composable
-fun BillForm(modifier: Modifier=Modifier,onBillChange:(String)->Unit){
-    val totalBill = remember {
-        mutableStateOf("")
-    }
-    val valid= remember(totalBill.value) {
-        totalBill.value.trim().isNotEmpty()
-    }
-val people= remember { mutableStateOf(1)}
-    val keyboardController=LocalSoftwareKeyboardController.current
-
- val tipAmount= remember {
-     mutableStateOf(0f)
- }
-
- val percentage= remember {
-     mutableStateOf(0f)
- }
-val sliderValue= remember {
-    mutableStateOf(0f)
-}
+fun BillForm(  totalBill: MutableState<String>,
+             valid: Boolean,
+             people: MutableState<Int>,
+             sliderValue: MutableState<Float>,
+             percentage: Float,
+             tipAmount: Float,onBillChange:(String)->Unit){
+    val keyboardController= LocalSoftwareKeyboardController.current
     CustomInputField(isSingleLine = true, valueState = totalBill, labelId = stringResource(R.string.enter_bill) , enabled =true,
         onAction = KeyboardActions{
             if(!valid){
@@ -151,7 +165,7 @@ val sliderValue= remember {
             onBillChange(totalBill.value.trim())
             keyboardController?.hide()
         })
-//    if(valid){
+    if(valid){
         Row(
             modifier = Modifier.padding(all=3.dp),
             horizontalArrangement = Arrangement.Start
@@ -183,19 +197,19 @@ val sliderValue= remember {
         Text(text = "Tip:", modifier = Modifier.align(alignment = CenterVertically))
        Row( modifier = Modifier
            .fillMaxWidth()
-           .padding(end = 5.dp), horizontalArrangement = Arrangement.End){ Text(text = "$${tipAmount.value}")}
+           .padding(end = 5.dp), horizontalArrangement = Arrangement.End){ Text(text = "$${tipAmount}")}
     }
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(all = 10.dp)) {
-        Text(modifier = Modifier.align(CenterHorizontally), text = "%${percentage.value}")
+        Text(modifier = Modifier.align(CenterHorizontally), text = "%${percentage}")
         Spacer(modifier = Modifier.height(14.dp))
         Slider(value = sliderValue.value, onValueChange ={
             sliderValue.value=it
         }, steps = 5)
     }
-//    }
-//    else Box(){}
+    }
+    else Box(){}
 }
 
 
