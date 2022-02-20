@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">JectPackComposeDemo</string>
+    <string name="app_name">Note App</string>
     <string name="title_activity_compose">ComposeActivity</string>
 </resources>
