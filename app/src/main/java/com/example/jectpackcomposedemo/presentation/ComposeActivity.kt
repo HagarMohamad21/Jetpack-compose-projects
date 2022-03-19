@@ -1,9 +1,10 @@
-package com.example.jectpackcomposedemo
+package com.example.jectpackcomposedemo.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jectpackcomposedemo.presentation.navigation.WeatherNavigation
 import com.example.jectpackcomposedemo.ui.theme.JectPackComposeDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,31 +32,44 @@ class ComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Surface(
-                modifier = Modifier.padding(12.dp)
-            ) {
-
-            }
+          WeatherApp()
 
         }
     }
 }
+
 
 
 @Composable
-fun Content(container: @Composable () -> Unit) {
-    JectPackComposeDemoTheme {
-        // A surface container using the 'background' color from the theme
+fun WeatherApp(){
+    JectPackComposeDemoTheme() {
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = 10.dp),
+            modifier=Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            container()
+          //  Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+            WeatherNavigation()
+            //}
         }
     }
+
 }
+
+
+//@Composable
+//fun Content(container: @Composable () -> Unit) {
+//    JectPackComposeDemoTheme {
+//        // A surface container using the 'background' color from the theme
+//        Surface(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(all = 10.dp),
+//            color = MaterialTheme.colors.background
+//        ) {
+//            container()
+//        }
+//    }
+//}
 
 
 
