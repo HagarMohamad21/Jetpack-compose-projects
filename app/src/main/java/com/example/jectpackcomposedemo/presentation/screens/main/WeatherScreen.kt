@@ -45,6 +45,15 @@ fun WeatherScreen(
         } else if (result.value.data != null) {
             MainScaffold(navController, result.value.data)
         }
+        else if(result.value.e!=null){
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "${result.value.e?.message}", color = Color.Red)
+            }
+
+        }
     }
 }
 
