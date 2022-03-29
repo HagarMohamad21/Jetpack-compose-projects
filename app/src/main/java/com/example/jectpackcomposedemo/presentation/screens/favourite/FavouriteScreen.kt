@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.jectpackcomposedemo.R
+import com.example.jectpackcomposedemo.presentation.navigation.WeatherScreens
 import com.example.jectpackcomposedemo.utils.formatDateDay
 import com.example.jectpackcomposedemo.utils.formatTempDegree
 import com.example.jectpackcomposedemo.utils.getImageUrl
@@ -69,7 +71,10 @@ fun FavouriteScreen(navController: NavController,viewModel:FavouriteViewModel){
                             .background(
                                 color = Color(0xFFDAECEE),
 
-                                )) {
+                                )
+                            .clickable {
+                                navController.navigate("${WeatherScreens.WeatherScreen.name}/${it.city}")
+                            }) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
@@ -95,17 +100,19 @@ fun FavouriteScreen(navController: NavController,viewModel:FavouriteViewModel){
                             {
                                 Text(text = it.country, color = Color.Black, modifier = Modifier.padding(3.dp))
                             }
+                            IconButton(
+                                modifier = Modifier.size(35.dp),
+                                onClick = {
+                                    viewModel.removeCity(it)
+                                })
+                            {
+                                Icon(imageVector = Icons.Default.Delete, contentDescription = "", tint = Color(
+                                    0xFFEE9A9A
+                                )
+                                )
+                            }
+                        }
 
-                        }
-                        IconButton(onClick = {
-                         viewModel.removeCity(it)
-                        })
-                        {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = "", tint = Color(
-                                0xFFEE9A9A
-                            )
-                            )
-                        }
                     }
 
                 }
