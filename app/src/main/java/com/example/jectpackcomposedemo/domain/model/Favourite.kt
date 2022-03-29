@@ -1,26 +1,16 @@
 package com.example.jectpackcomposedemo.domain.model
 
-import android.os.Build
-import android.os.Parcelable
-import androidx.annotation.RequiresApi
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-//@Entity(tableName = "fav_tbl")
-//data class Favorite(
-//    @NonNull
-//    @PrimaryKey
-//    @ColumnInfo(name = "city")
-//    val city: String,
-//
-//    @ColumnInfo(name = "country")
-//    val country: String)
-
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Entity(tableName = "fav_tbl")
+@Entity(tableName = "fav_cities")
 data class Favorite(
+    @NonNull
     @PrimaryKey
-    val city:String
-)
+    @ColumnInfo(name = "city")
+    val city: String,
+
+    @ColumnInfo(name = "country")
+    val country: String)

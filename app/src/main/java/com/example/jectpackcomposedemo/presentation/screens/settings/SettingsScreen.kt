@@ -13,7 +13,10 @@ import com.example.jectpackcomposedemo.widgets.WeatherTopBar
 fun SettingsScreen(navController: NavController){
 
     Scaffold(
-        topBar = { WeatherTopBar("Settings", onNavigationClicked = {navController.popBackStack()}) }
+        topBar = { WeatherTopBar(
+            "Settings",
+            onNavigationClicked = {navController.popBackStack()}
+        ) }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

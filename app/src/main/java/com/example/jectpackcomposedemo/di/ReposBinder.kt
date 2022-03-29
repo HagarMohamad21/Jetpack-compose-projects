@@ -1,6 +1,8 @@
 package com.example.jectpackcomposedemo.di
 
+import com.example.jectpackcomposedemo.data.database.FavouritesRepository
 import com.example.jectpackcomposedemo.data.repository.WeatherRepository
+import com.example.jectpackcomposedemo.domain.repository.FavouriteRepoImpl
 import com.example.jectpackcomposedemo.domain.repository.WeatherRepoImpl
 import dagger.Binds
 import dagger.Module
@@ -17,5 +19,8 @@ abstract class ReposBinder {
     @Singleton
    abstract fun bindWeatherRepo(repository: WeatherRepoImpl):WeatherRepository
 
+   @Binds
+   @Singleton
+   abstract fun bindFavouriteRepo(repository: FavouriteRepoImpl):FavouritesRepository
 
 }

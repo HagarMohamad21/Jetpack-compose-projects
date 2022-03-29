@@ -14,7 +14,6 @@ class WeatherRepoImpl @Inject constructor(private val apiService:WeatherService)
       }
       catch (e:Exception) {return DataOrException(e=e, loading = false)
       }
-
         return DataOrException(data = response,loading = false)
     }
 

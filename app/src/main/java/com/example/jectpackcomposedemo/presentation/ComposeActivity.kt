@@ -13,6 +13,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -27,6 +28,7 @@ import com.example.jectpackcomposedemo.ui.theme.JectPackComposeDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 
+@ExperimentalComposeUiApi
 @AndroidEntryPoint
 class ComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +42,7 @@ class ComposeActivity : ComponentActivity() {
 
 
 
+@ExperimentalComposeUiApi
 @Composable
 fun WeatherApp(){
     JectPackComposeDemoTheme() {

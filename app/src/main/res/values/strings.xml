@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">JectPackComposeDemo</string>
     <string name="title_activity_compose">ComposeActivity</string>
+    <string name="about">Weather app version 1.0</string>
+    <string name="api">API Used: "https://api.openweathermap.org/"</string>
+    <string name="fav">Fav</string>
+
 </resources>

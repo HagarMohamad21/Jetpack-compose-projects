@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Year 2022 study/JectPackComposeDemo/app/src/main/res/drawable/ic_favorite.xml" value="0.1" />
+        <entry key="..\:/Android Year 2022 study/JectPackComposeDemo/app/src/main/res/drawable/ic_favorite_red.xml" value="0.1" />
+        <entry key="..\:/Android Year 2022 study/JectPackComposeDemo/app/src/main/res/drawable/ic_info.xml" value="0.1" />
+        <entry key="..\:/Android Year 2022 study/JectPackComposeDemo/app/src/main/res/drawable/ic_settings.xml" value="0.1" />
         <entry key="..\:/Android Year 2022 study/JectPackComposeDemo/app/src/main/res/drawable/ic_sun_svgrepo_com.xml" value="0.1045" />
       </map>
     </option>

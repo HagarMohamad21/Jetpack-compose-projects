@@ -28,119 +28,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.jectpackcomposedemo.R
 import com.example.jectpackcomposedemo.data.model.WeatherApiResponse
 import com.example.jectpackcomposedemo.data.model.WeatherItem
 import com.example.jectpackcomposedemo.presentation.navigation.WeatherScreens
+import com.example.jectpackcomposedemo.presentation.screens.favourite.FavouriteViewModel
 import com.example.jectpackcomposedemo.utils.*
 
-@Preview
-@Composable
-fun WeatherTopBar(
-    title: String = "",
-    elevation: Dp = 2.dp,
-    isHomeScreen: Boolean = false,
-    navIcon: Icon? = null,
-    onSearchClicked: () -> Unit = {},
-    onNavigationClicked:()-> Unit={},
-    navController: NavController?=null
 
-
-) {
-    val dialogShown= remember {
-        mutableStateOf(false)
-    }
-
-    if(dialogShown.value){
-
-        ShowDropDownMenu(dialogShown = dialogShown, navController = navController)
-    }
-
-    TopAppBar(
-        title = {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-        },
-        actions = {
-            if (isHomeScreen) {
-                IconButton(onClick = {onSearchClicked.invoke() }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
-                        Modifier.padding(3.dp)
-                    )
-                }
-                IconButton(onClick = {
-                    dialogShown.value=true
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = "Menu",
-                        Modifier.padding(3.dp)
-                    )
-                }
-
-            } else Box {}
-
-        },
-
-        navigationIcon = {
-            if (!isHomeScreen) {
-                IconButton(
-                    onClick = {onNavigationClicked.invoke()}
-                ) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back arrow")
-                }
-            }
-        },
-        backgroundColor = Color.White,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .padding(5.dp),
-        elevation = elevation,
-    )
-    Log.e("TAG", "WeatherTopBar dialog: ${dialogShown.value}", )
-
-}
-
-@Composable
-fun CircleWithColumn(
-    backgroundColor: Color,
-    size: Dp,
-    weatherResponse: WeatherApiResponse
-) {
-    val weather = weatherResponse.list[0].weather[0]
-    val weatherItem = weatherResponse.list[0]
-    val degree = formatTempDegree(weatherItem.temp.day)
-    val weatherDescription = weather.main
-    val imageUrl = getImageUrl(weatherItem)
-    Log.e("TAG", "MainScaffold: $imageUrl")
-
-
-    Surface(
-        modifier = Modifier.size(size), shape = CircleShape, color = backgroundColor
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Image(
-                painter = rememberImagePainter(imageUrl),
-                contentDescription = "Image",
-                modifier = Modifier.size(80.dp)
-            )
-            Text(
-                text = degree,
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.ExtraBold
-            )
-            Text(text = weatherDescription, fontStyle = FontStyle.Italic)
-        }
-    }
-}
 
 @Composable
 fun WeatherDescriptionBar(
@@ -171,7 +69,7 @@ fun WeatherDescriptionBar(
                 iconDrawable = R.drawable.ic_pressure,
                 text = "$pressure psi",
 
-                )
+            )
             IconWithText(iconDrawable = R.drawable.ic_windy, text = "$wind mph")
 
         }
@@ -267,22 +165,22 @@ fun WeekWeatherList(list: List<WeatherItem>) {
                     Surface(
                         color = Color(0xFFFFC400),
                         modifier = Modifier.padding(4.dp)
-                        , shape = CircleShape.copy(CornerSize(20.dp))
+                    , shape = CircleShape.copy(CornerSize(20.dp))
                     )
                     {
                         Text(text = it.weather[0].main, color = Color.Black, modifier = Modifier.padding(3.dp))
                     }
 
-                    Row(   modifier = Modifier.padding(4.dp)) {
-                        Text(   modifier = Modifier.padding(2.dp),
-                            text =  formatTempDegree(it.temp.max),
-                            style = TextStyle(color = Color.Blue,
-                                fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 13.sp))
-                        Text( modifier = Modifier.padding(2.dp),
-                            text = formatTempDegree(it.temp.min),
-                            style = TextStyle(color = Color.LightGray, fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Italic, fontSize = 13.sp))
-                    }
+                  Row(   modifier = Modifier.padding(4.dp)) {
+                      Text(   modifier = Modifier.padding(2.dp),
+                          text =  formatTempDegree(it.temp.max),
+                          style = TextStyle(color = Color.Blue,
+                              fontWeight = FontWeight.Bold, fontStyle = FontStyle.Italic, fontSize = 13.sp))
+                      Text( modifier = Modifier.padding(2.dp),
+                          text = formatTempDegree(it.temp.min),
+                          style = TextStyle(color = Color.LightGray, fontWeight = FontWeight.Bold,
+                              fontStyle = FontStyle.Italic, fontSize = 13.sp))
+                  }
 
                 }
 
@@ -306,33 +204,104 @@ fun ShowDropDownMenu(dialogShown:MutableState<Boolean>,navController: NavControl
         mutableStateOf(true)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize(Alignment.TopEnd)
-            .absolutePadding(top = 45.dp, right = 24.dp)
+  Column(
+      modifier = Modifier
+          .fillMaxWidth()
+          .wrapContentSize(Alignment.TopEnd)
+          .absolutePadding(top = 45.dp, right = 24.dp)
 
-    ) {
+  ) {
 
-        DropdownMenu(modifier = Modifier.width(140.dp),expanded =expanded.value , onDismissRequest = {
+      DropdownMenu(modifier = Modifier.width(140.dp),expanded =expanded.value , onDismissRequest = {
+          expanded.value=false
+              dialogShown.value = false
+      }) {
+       menuItems.forEachIndexed { index, s ->
+        DropdownMenuItem(onClick = {
+            when(index){
+                0->{navController?.navigate(WeatherScreens.FavouriteScreen.name)}
+                1->{navController?.navigate(WeatherScreens.SettingsScreen.name)}
+                else ->navController?.navigate(WeatherScreens.AboutScreen.name)
+            }
             expanded.value=false
-            dialogShown.value = false
+            dialogShown.value=false
         }) {
-            menuItems.forEachIndexed { index, s ->
-                DropdownMenuItem(onClick = {
-                    when(index){
-                        0->{navController?.navigate(WeatherScreens.FavouriteScreen.name)}
-                        1->{navController?.navigate(WeatherScreens.SettingsScreen.name)}
-                        else ->navController?.navigate(WeatherScreens.AboutScreen.name)
-                    }
-                    expanded.value=false
-                    dialogShown.value=false
-                }) {
-                    IconWithText(iconDrawable = menuIcons[index], text = menuItems[index],true)
-                }
+            IconWithText(iconDrawable = menuIcons[index], text = menuItems[index],true)
+        }
+       }
+      }
+  }
+    @Composable
+    fun CircleWithColumn(
+        backgroundColor: Color,
+        size: Dp,
+        weatherResponse: WeatherApiResponse
+    ) {
+        val weather = weatherResponse.list[0].weather[0]
+        val weatherItem = weatherResponse.list[0]
+        val degree = formatTempDegree(weatherItem.temp.day)
+        val weatherDescription = weather.main
+        val imageUrl = getImageUrl(weatherItem)
+        Log.e("TAG", "MainScaffold: $imageUrl")
+
+
+        Surface(
+            modifier = Modifier.size(size), shape = CircleShape, color = backgroundColor
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Image(
+                    painter = rememberImagePainter(imageUrl),
+                    contentDescription = "Image",
+                    modifier = Modifier.size(80.dp)
+                )
+                Text(
+                    text = degree,
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(text = weatherDescription, fontStyle = FontStyle.Italic)
             }
         }
     }
 
+}
+@Composable
+fun CircleWithColumn(
+    backgroundColor: Color,
+    size: Dp,
+    weatherResponse: WeatherApiResponse
+) {
+    val weather = weatherResponse.list[0].weather[0]
+    val weatherItem = weatherResponse.list[0]
+    val degree = formatTempDegree(weatherItem.temp.day)
+    val weatherDescription = weather.main
+    val imageUrl = getImageUrl(weatherItem)
+    Log.e("TAG", "MainScaffold: $imageUrl")
 
+
+    Surface(
+        modifier = Modifier.size(size), shape = CircleShape, color = backgroundColor
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Image(
+                painter = rememberImagePainter(imageUrl),
+                contentDescription = "Image",
+                modifier = Modifier.size(80.dp)
+            )
+            Text(
+                text = degree,
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.ExtraBold
+            )
+            Text(text = weatherDescription, fontStyle = FontStyle.Italic)
+        }
+    }
 }

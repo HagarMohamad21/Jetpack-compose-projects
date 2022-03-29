@@ -1,5 +1,6 @@
 package com.example.jectpackcomposedemo.presentation.screens.favourite
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,25 +25,29 @@ import com.example.jectpackcomposedemo.widgets.WeatherTopBar
 fun FavouriteScreen(navController: NavController,viewModel:FavouriteViewModel){
 
     Scaffold(
-        topBar = { WeatherTopBar("Favourite", onNavigationClicked = {navController.popBackStack()})}
+        topBar = { WeatherTopBar(
+            "Favourite",
+            onNavigationClicked = {navController.popBackStack()}
+        )}
     ) {
         Column(
             modifier=Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-//            Text(stringResource(id = R.string.fav) , style = TextStyle(
-//                color = Color.Black,
-//                fontWeight = FontWeight.Bold,
-//                fontSize = 20.sp
-//            ) )
+            Text(stringResource(id = R.string.fav) , style = TextStyle(
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            ) )
 
             LazyColumn(content = {
-//               items(viewModel.favouriteList.value){
-//                   Row() {
-//                       Text(text = it.city)
-//                   }
-//               }
+               items(viewModel.favouriteList.value){
+                   Log.e("TAG", "FavouriteScreen: $it", )
+                   Row() {
+                       Text(text = it.city)
+                   }
+               }
             })
 
         }

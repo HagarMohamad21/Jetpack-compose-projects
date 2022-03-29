@@ -27,10 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jectpackcomposedemo.R
 import com.example.jectpackcomposedemo.presentation.navigation.WeatherScreens
+import com.example.jectpackcomposedemo.utils.Constants.defaultCity
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController){
+
 
     val scale= remember() {
         Animatable(0f)
@@ -41,7 +43,7 @@ fun SplashScreen(navController: NavController){
             , easing ={ OvershootInterpolator(8f).getInterpolation(it)})
         )
      delay(1000L)
-        navController.navigate(WeatherScreens.WeatherScreen.name)
+        navController.navigate("${WeatherScreens.WeatherScreen.name}/${defaultCity}")
 
     })
 
