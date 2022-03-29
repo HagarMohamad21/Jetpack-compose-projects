@@ -10,12 +10,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,13 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
 import com.example.jectpackcomposedemo.R
 import com.example.jectpackcomposedemo.data.model.WeatherApiResponse
 import com.example.jectpackcomposedemo.domain.model.Favorite
 import com.example.jectpackcomposedemo.presentation.screens.favourite.FavouriteViewModel
-import com.example.jectpackcomposedemo.utils.formatTempDegree
-import com.example.jectpackcomposedemo.utils.getImageUrl
+import com.example.jectpackcomposedemo.utils.ShowToast
+
 
 @Preview
 @Composable
@@ -51,9 +49,19 @@ fun WeatherTopBar(
         mutableStateOf(false)
     }
 
+    val showToast= remember {
+        mutableStateOf(false)
+    }
+
+
     if(dialogShown.value){
         ShowDropDownMenu(dialogShown = dialogShown, navController = navController)
     }
+     if(showToast.value){
+      ShowToast( message ="Testttttttt")
+     }
+
+
 
     TopAppBar(
         title = {
@@ -78,7 +86,9 @@ fun WeatherTopBar(
                     )
                 }
 
-            } else Box {}
+            }
+            else Box {}
+
 
         },
 
@@ -92,20 +102,10 @@ fun WeatherTopBar(
             }
 
             if(isHomeScreen){
-
-                val favDrawableId= remember {
-                    mutableStateOf(R.drawable.ic_favorite)
+                cityDetails?.let {
+                    HandleFavourite(it,favouriteViewModel, showToast = showToast)
                 }
-                if(favouriteViewModel.isFav("Cairo"))
-                    favDrawableId.value=R.drawable.ic_favorite_red
 
-                IconButton(onClick = {
-                    favouriteViewModel.addCityToFavs(Favorite("Cairo","Egypt")){
-                        favDrawableId.value=R.drawable.ic_favorite_red
-                    }
-                }) {
-      Image(painter = painterResource(id = favDrawableId.value), contentDescription ="" )
-                }
             }
         },
         backgroundColor = Color.White,
@@ -119,3 +119,47 @@ fun WeatherTopBar(
 
 }
 
+@Composable
+fun HandleFavourite(cityDetails: WeatherApiResponse,favouriteViewModel: FavouriteViewModel,showToast: MutableState<Boolean>){
+val favCity=Favorite(cityDetails.city.name,cityDetails.city.country)
+
+val favCities=favouriteViewModel.favouriteList.collectAsState().value
+    var isFav= remember(favCities) {
+        favCities.contains(
+            favCity
+        )
+    }
+
+    val favDrawableId= remember(isFav) {
+        if(isFav)mutableStateOf(R.drawable.ic_favorite_red)
+        else mutableStateOf(R.drawable.ic_favorite)
+    }
+
+    val message= remember(isFav) {
+        if (isFav) mutableStateOf("Added to Favorites")
+        else mutableStateOf("Removed from Favorites")
+
+    }
+    Log.e("TAG", "HandleFavourite: ${message.value}", )
+
+
+
+
+
+    IconButton(onClick = {
+           if(isFav)
+           {
+               favouriteViewModel.removeCity(favCity).run {
+                   isFav=false
+
+               }
+           }
+        else
+            favouriteViewModel.addCityToFavs(favCity).run {
+               isFav=true
+           }
+
+    }) {
+        Image(painter = painterResource(id = favDrawableId.value), contentDescription ="" )
+    }
+}

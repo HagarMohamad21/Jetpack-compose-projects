@@ -3,7 +3,6 @@ package com.example.jectpackcomposedemo.presentation.screens.favourite
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jectpackcomposedemo.data.model.City
 import com.example.jectpackcomposedemo.domain.model.Favorite
 import com.example.jectpackcomposedemo.domain.usecase.FavouriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,27 +25,22 @@ class FavouriteViewModel @Inject constructor(private val useCase: FavouriteUseCa
         viewModelScope.launch (Dispatchers.IO){
            useCase.getAllFavs().distinctUntilChanged().collect{favs->
                if(favs.isNullOrEmpty()){
+                   _favouriteList.value= emptyList()
                    Log.e("TAG", ":EMPTY FAVS ", )
                }
                else _favouriteList.value=favs
            }
         }
-
     }
 
-
-    fun addCityToFavs(city: Favorite,changeIcon:()->Unit){
+    fun addCityToFavs(city: Favorite){
         viewModelScope.launch (Dispatchers.IO){
             useCase.addCity(city)
-            changeIcon.invoke()
         }
     }
-
-fun isFav(city:String):Boolean{
-    var favCity=false
-    viewModelScope.launch(Dispatchers.IO) {
-    favCity=useCase.hasItem(city)
-}
-    return favCity
-}
+   fun removeCity(city:Favorite){
+       viewModelScope.launch(Dispatchers.IO) {
+           useCase.removeCity(city)
+       }
+   }
 }

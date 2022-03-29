@@ -13,4 +13,7 @@ private val favouritesRepository: FavouritesRepository
 
 suspend fun addCity(favorite: Favorite)=favouritesRepository.addCityToFavs(favorite)
    suspend fun hasItem(city: String)=favouritesRepository.hasItem(city)
+    suspend fun removeCity(city: Favorite) {
+        favouritesRepository.deleteFav(city)
+    }
 }
