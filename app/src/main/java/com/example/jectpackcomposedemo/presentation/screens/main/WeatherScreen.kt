@@ -25,34 +25,41 @@ fun WeatherScreen(
     viewModel: WeatherViewModel,
     cityName: String = "Cairo"
 ) {
+
+
+
     //TODO Code this part in a neater way and use flow
-    val result =
-        produceState<DataOrException<WeatherApiResponse, Boolean, Exception>>(
-            initialValue =
-            DataOrException(loading = true)
-        ) {
-            value = viewModel.loadWeather(cityName)
+    val result = produceState<DataOrException<WeatherApiResponse, Boolean, Exception>>(initialValue =
+            DataOrException(loading = true))
+        {
+            val unit = viewModel.getUnitFromDataStore().collect{
+                value = viewModel.loadWeather(cityName,it)
+            }
+
         }
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        if (result.value.loading == true) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressIndicator()
+        when {
+            result.value.loading == true -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        } else if (result.value.data != null) {
-            MainScaffold(navController, result.value.data)
-        }
-        else if(result.value.e!=null){
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text = "${result.value.e?.message}", color = Color.Red)
+            result.value.data != null -> {
+                MainScaffold(navController, result.value.data)
             }
+            result.value.e!=null -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "${result.value.e?.message}", color = Color.Red)
+                }
 
+            }
         }
     }
 }

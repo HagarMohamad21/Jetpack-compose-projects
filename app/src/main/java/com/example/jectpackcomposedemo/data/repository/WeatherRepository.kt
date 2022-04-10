@@ -5,5 +5,5 @@ import com.example.jectpackcomposedemo.utils.DataOrException
 
 
 interface WeatherRepository {
-    suspend fun getWeather(city: String): DataOrException<WeatherApiResponse,Boolean,Exception>
+    suspend fun getWeather(city: String,unit:String): DataOrException<WeatherApiResponse,Boolean,Exception>
 }

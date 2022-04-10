@@ -2,8 +2,6 @@ package com.example.jectpackcomposedemo.di
 
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.Room
 import com.example.jectpackcomposedemo.data.api.WeatherService
 import com.example.jectpackcomposedemo.data.database.FavouriteDB

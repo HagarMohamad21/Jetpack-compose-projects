@@ -1,10 +1,9 @@
 package com.example.jectpackcomposedemo.utils
 
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Snackbar
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
@@ -12,6 +11,8 @@ import androidx.compose.ui.platform.LocalContext
 fun ShowToast(message:String){
     val context= LocalContext.current
     Log.e("TAG", "ShowToast: ", )
-    Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+    Snackbar() {
+        Text(text = message)
+    }
 
 }

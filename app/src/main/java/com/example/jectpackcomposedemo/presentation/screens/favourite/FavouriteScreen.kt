@@ -95,7 +95,7 @@ fun FavouriteScreen(navController: NavController,viewModel:FavouriteViewModel){
                             Surface(
                                 color = Color(0xFFD2D8FA),
                                 modifier = Modifier.padding(4.dp)
-                                , shape = CircleShape.copy(CornerSize(20.dp))
+                                , shape = CircleShape.copy(CornerSize(5.dp))
                             )
                             {
                                 Text(text = it.country, color = Color.Black, modifier = Modifier.padding(3.dp))

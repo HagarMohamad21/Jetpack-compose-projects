@@ -15,6 +15,7 @@ import com.example.jectpackcomposedemo.presentation.screens.favourite.FavouriteV
 import com.example.jectpackcomposedemo.presentation.screens.main.WeatherViewModel
 import com.example.jectpackcomposedemo.presentation.screens.search.SearchScreen
 import com.example.jectpackcomposedemo.presentation.screens.settings.SettingsScreen
+import com.example.jectpackcomposedemo.presentation.screens.settings.SettingsViewModel
 
 @ExperimentalComposeUiApi
 @Composable
@@ -51,9 +52,12 @@ fun WeatherNavigation() {
                 navController = navController,viewModel
             )
         }
+
         composable(SettingsScreen.name){
+            val viewModel= hiltViewModel<SettingsViewModel>()
            SettingsScreen(
-                navController = navController
+                navController = navController,
+               viewModel
             )
         }
 

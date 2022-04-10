@@ -13,6 +13,6 @@ interface WeatherService {
     suspend fun getWeather(
         @Query("q") query:String,
         @Query("appid")appId:String=Constants.API_KEY,
-        @Query("units") units:String=Constants.IMPERIAL
+        @Query("units") units:String
     ):WeatherApiResponse
 }

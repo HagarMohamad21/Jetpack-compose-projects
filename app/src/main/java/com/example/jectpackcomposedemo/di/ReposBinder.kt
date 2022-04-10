@@ -1,6 +1,8 @@
 package com.example.jectpackcomposedemo.di
 
 import com.example.jectpackcomposedemo.data.database.FavouritesRepository
+import com.example.jectpackcomposedemo.data.datastore.PrefStore
+import com.example.jectpackcomposedemo.data.datastore.PrefStoreImpl
 import com.example.jectpackcomposedemo.data.repository.WeatherRepository
 import com.example.jectpackcomposedemo.domain.repository.FavouriteRepoImpl
 import com.example.jectpackcomposedemo.domain.repository.WeatherRepoImpl
@@ -22,5 +24,12 @@ abstract class ReposBinder {
    @Binds
    @Singleton
    abstract fun bindFavouriteRepo(repository: FavouriteRepoImpl):FavouritesRepository
+
+
+ @Binds
+   @Singleton
+   abstract fun bindPrefStore(prefStoreImpl: PrefStoreImpl):PrefStore
+
+
 
 }
