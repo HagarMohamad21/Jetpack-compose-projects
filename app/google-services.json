@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "706481381767",
+    "project_id": "jet-reader-app",
+    "storage_bucket": "jet-reader-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706481381767:android:5eda3fdf6ce94568b6b322",
+        "android_client_info": {
+          "package_name": "com.example.jectpackcomposedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706481381767-tok5ojnq2litj5hel3fr716251homjj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOTTlSi-ZEX7DC6W3NL1nHuPpepzXrcAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "706481381767-tok5ojnq2litj5hel3fr716251homjj5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
